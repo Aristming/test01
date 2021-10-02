@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjpowernode.dao.StudentDao">
+<!--    这就是拼接操作
+    select id,name,email,age from student where name=? and age>?
+-->
+<!--    id标签：用来配置主键的对应关系
+        result标签：用来配置普通字段的对应关系
+        对于student表，表结果是一个id和三个普通字段
+        所以我们要一个id标签，三个result标签
+        property属性：配置的是类中的属性名
+        colum属性：配置的是表中的字段名
+        这样能建立一个属性和表字段一一对应的关系了
+-->
+<!--    <resultMap id="stuMap" type="Student">-->
+<!--        <id property="id" column="id"/>-->
+<!--        <id property="name" column="name"/>-->
+<!--        <id property="email" column="email"/>-->
+<!--        <id property="classroom" column="classroom"/>-->
+<!--        <id property="age" column="age"/>-->
+<!--    </resultMap>-->
+    <select id="selectStudentIf" resultType="com.bjpowernode.domain.Student">
+        select id,name,email,age from student
+        where
+<if test="name != null and name != ''">
+    name=#{name}
+</if>
+<if test="age > 0">
+    or age > #{age}
+</if>
+    </select>
+
+
+    <select id="selectStudentWhere" resultType="com.bjpowernode.domain.Student">
+        select id,name,email,age from student
+<where>
+    <if test="name != null and name != ''">
+        name =#{name}
+    </if>
+<if test="age > 0">
+    or age > #{age}
+</if>
+</where>
+    </select>
+     <select id="selectForeachOne" resultType="com.bjpowernode.domain.Student">
+         select * from student where id in
+<foreach collection="list" item="myid" open="(" close=")" separator=",">
+    #{myid}
+</foreach>
+     </select>
+    <select id="selectForeachTwo" resultType="com.bjpowernode.domain.Student">
+        select * from student where id in
+<foreach collection="list" item="stu" open="(" close=")" separator=",">
+    #{stu.id}
+</foreach>
+    </select>
+    <select id="selectSudentAll" resultType="com.bjpowernode.domain.Student">
+        select * from student
+    </select>
+
+    <select id="select20" resultType="com.bjpowernode.domain.Student">
+        select student.name,classroom.name from student join classroom on student.classroom=classroom.id;
+    </select>
+
+    <select id="select21" resultType="com.bjpowernode.vo.StudentAndClassroomVo">
+        select s.id sid,s.name sname,s.age sage,s.email,c.id cid,c.name catalog_name
+        from student s join classroom c on s.classroom=c.id
+    </select>
+
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="jdbc.properties"/>
+    <!--settings：控制mybatis全局行为-->
+    <settings>
+        <!--设置mybatis输出日志-->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+    <typeAliases>
+        <typeAlias type="com.bjpowernode.domain.Student" alias="stu"/>
+<!--        <typeAlias type="com.bjpowernode.domai"-->
+    </typeAliases>
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+    </plugins>
+    <environments default="mydev">
+        <environment id="mydev">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <!--数据库的驱动类名-->
+                <property name="driver" value="${jdbc.driver}"/>
+                <!--连接数据库的url字符串-->
+                <property name="url" value="${jdbc.url}"/>
+                <!--访问数据库的用户名-->
+                <property name="username" value="${jdbc.user}"/>
+                <!--密码-->
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+
+    </environments>
+
+    <!-- sql mapper(sql映射文件)的位置-->
+    <mappers>
+<!--        第一种方式-->
+<!--        <mapper resource="com/bjpowernode/dao/StudentDao.xml"/>-->
+<!--        <mapper resource="com/bjpowernode/dao/OrderDao.xml"/>-->
+<!-- 第二种方式，使用包名，mybatis能够一次性找到全部的-->
+        <package name="com.bjpowernode.dao"/>
+        <!--<mapper resource="com/bjpowernode/dao/SchoolDao.xml" />-->
+    </mappers>
+</configuration>
